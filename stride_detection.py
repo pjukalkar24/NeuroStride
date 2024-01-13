@@ -404,8 +404,10 @@ with open('average_value.txt', 'r') as values:
     for avg in avgs:
         val = avg[avg.find(' ') + 1: -1]
         AverageVals.append(float(val))
+    print(AverageVals)
 
 while True:
+    print("Beginning detection...")
     icm20948.icm20948_Gyro_Accel_Read()
     icm20948.icm20948MagRead()
     icm20948.icm20948CalAvgValue()
