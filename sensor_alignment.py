@@ -400,7 +400,7 @@ if __name__ == '__main__':
   MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
   icm20948=ICM20948()
 
-  with open("sensor_alignment.csv", "r+") as log:
+  with open("sensor_alignment.csv", "w") as log:
       if len( log.readlines() ) == 0:
         log.write("roll,pitch,yaw,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z")
 
