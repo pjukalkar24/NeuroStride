@@ -401,8 +401,7 @@ if __name__ == '__main__':
   icm20948=ICM20948()
 
   with open("sensor_alignment.csv", "w") as log:
-      if len( log.readlines() ) == 0:
-        log.write("roll,pitch,yaw,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z")
+      log.write("roll,pitch,yaw,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z")
 
       x = 0
       while x < 500:
