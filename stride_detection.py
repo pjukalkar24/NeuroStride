@@ -4,6 +4,7 @@ import time
 import smbus
 import math
 import firebase_admin
+from firebase_admin import db
 
 Gyro  = [0,0,0]
 Accel = [0,0,0]
@@ -400,7 +401,7 @@ cred_obj = firebase_admin.credentials.Certificate('neurostride-80ede-firebase-ad
 default_app = firebase_admin.initialize_app(cred_obj, {
 	'databaseURL':'https://neurostride-80ede-default-rtdb.firebaseio.com/'
 })
-ref = firebase_admin.db.reference("/")
+ref = db.reference("/")
 ref.set({})
 
 MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
