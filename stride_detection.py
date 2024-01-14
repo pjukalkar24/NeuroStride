@@ -3,6 +3,7 @@
 import time
 import smbus
 import math
+import firebase_admin
 
 Gyro  = [0,0,0]
 Accel = [0,0,0]
@@ -395,6 +396,13 @@ class ICM20948(object):
     MotionVal[8]=Mag[2]
 
 # code here
+cred_obj = firebase_admin.credentials.Certificate('neurostride-80ede-firebase-adminsdk-xfz6o-e928e98abd.json')
+default_app = firebase_admin.initialize_app(cred_obj, {
+	'databaseURL':'https://neurostride-80ede-default-rtdb.firebaseio.com/'
+})
+ref = firebase_admin.reference("/")
+ref.set({})
+
 MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 icm20948=ICM20948()
 
@@ -420,6 +428,22 @@ while True:
     yaw   = math.atan2(-2 * q1 * q2 - 2 * q0 * q3, 2 * q2 * q2 + 2 * q3 * q3 - 1) * 57.3
     
     truths = [roll, pitch, yaw, Accel[0], Accel[1], Accel[2], Gyro[0], Gyro[1], Gyro[2], Mag[0], Mag[1], Mag[2]]
+    truths_json = {
+      'roll': truths[0],
+      'pitch': truths[1],
+      'yaw': truths[2],
+      'accel_x': truths[3],
+      'accel_y': truths[4],
+      'accel_z': truths[5],
+      'gyro_x': truths[6],
+      'gyro_y': truths[7],
+      'gyro_z': truths[8],
+      'mag_x': truths[9],
+      'mag_y': truths[10],
+      'mag_z': truths[11],
+    }
+
+    ref.push().set(truths_json)
 
     for index in range(len(AverageVals)): 
         if AverageVals[index] - 2 < truths[index] and truths[index] < AverageVals[index] + 2:
