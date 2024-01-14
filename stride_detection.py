@@ -400,7 +400,7 @@ cred_obj = firebase_admin.credentials.Certificate('neurostride-80ede-firebase-ad
 default_app = firebase_admin.initialize_app(cred_obj, {
 	'databaseURL':'https://neurostride-80ede-default-rtdb.firebaseio.com/'
 })
-ref = firebase_admin.reference("/")
+ref = firebase_admin.db.reference("/")
 ref.set({})
 
 MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
