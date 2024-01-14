@@ -425,7 +425,7 @@ while True:
         if AverageVals[index] - 2 < truths[index] and truths[index] < AverageVals[index] + 2:
             truths[index] = True
         truths[index] = False
-
+    print(truths)
     if sum(truths) > len(truths) // 2:
         print("fire")    
 
