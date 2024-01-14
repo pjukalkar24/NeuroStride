@@ -420,14 +420,16 @@ while True:
     yaw   = math.atan2(-2 * q1 * q2 - 2 * q0 * q3, 2 * q2 * q2 + 2 * q3 * q3 - 1) * 57.3
     
     truths = [roll, pitch, yaw, Accel[0], Accel[1], Accel[2], Gyro[0], Gyro[1], Gyro[2], Mag[0], Mag[1], Mag[2]]
-    print(truths)
+
     for index in range(len(AverageVals)): 
         if AverageVals[index] - 2 < truths[index] and truths[index] < AverageVals[index] + 2:
             truths[index] = True
         else:
           truths[index] = False
+
     print(truths)
+
     if sum(truths) > len(truths) // 2:
-        print("fire")    
+        print("fire\n")    
 
     # log.write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}\n".format(roll, pitch, yaw, Accel[0], Accel[1], Accel[2], Gyro[0], Gyro[1], Gyro[2], Mag[0], Mag[1], Mag[2]))
