@@ -5,6 +5,7 @@ import smbus
 import math
 import firebase_admin
 from firebase_admin import db
+import numpy as np
 
 Gyro  = [0,0,0]
 Accel = [0,0,0]
@@ -415,6 +416,40 @@ with open('average_value.txt', 'r') as values:
         AverageVals.append(float(val))
     print(AverageVals)
 
+def euler_to_rotation_matrix(pitch, roll, yaw):
+    pitch = np.radians(pitch)
+    roll = np.radians(roll)
+    yaw = np.radians(yaw)
+
+    R_x = np.array([[1, 0, 0],
+                    [0, np.cos(pitch), -np.sin(pitch)],
+                    [0, np.sin(pitch), np.cos(pitch)]])
+
+    R_y = np.array([[np.cos(roll), 0, np.sin(roll)],
+                    [0, 1, 0],
+                    [-np.sin(roll), 0, np.cos(roll)]])
+
+    R_z = np.array([[np.cos(yaw), -np.sin(yaw), 0],
+                    [np.sin(yaw), np.cos(yaw), 0],
+                    [0, 0, 1]])
+
+    return R_z.dot(R_y).dot(R_x)
+
+def euler_to_xyz(pitch, roll, yaw):
+    R = euler_to_rotation_matrix(pitch, roll, yaw)
+
+    x_axis = np.array([1, 0, 0])
+    y_axis = np.array([0, 1, 0])
+    z_axis = np.array([0, 0, 1])
+
+    x_new = R.dot(x_axis)
+    y_new = R.dot(y_axis)
+    z_new = R.dot(z_axis)
+
+    return x_new, y_new, z_new
+
+currVector = [0, 0, 0]
+
 print("Beginning detection...")
 while True:
     icm20948.icm20948_Gyro_Accel_Read()
@@ -446,6 +481,16 @@ while True:
 
     ref.push().set(truths_json)
 
+    x, y, z = euler_to_xyz(pitch, roll, yaw)
+    newVector = [0, 0, 0]
+    newVector[0] = currVector[0] + x[0]
+    newVector[1] = currVector[1] + y[1]
+    newVector[2] = currVector[2] + z[2]
+    slope = newVector[0] - currVector[0]
+
+    currVector = [*newVector]
+    
+
     for index in range(len(AverageVals)): 
         if AverageVals[index] - 2 < truths[index] and truths[index] < AverageVals[index] + 2:
             truths[index] = True
@@ -455,6 +500,8 @@ while True:
     print(truths)
 
     if sum(truths) > len(truths) // 2:
-        print("fire\n")    
+        print("old fire\n")
+    if -0.05 < slope < 0.05:
+        print("new fire\n")
 
     # log.write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}\n".format(roll, pitch, yaw, Accel[0], Accel[1], Accel[2], Gyro[0], Gyro[1], Gyro[2], Mag[0], Mag[1], Mag[2]))
