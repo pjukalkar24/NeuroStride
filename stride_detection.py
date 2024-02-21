@@ -403,7 +403,7 @@ default_app = firebase_admin.initialize_app(cred_obj, {
 	'databaseURL':'https://neurostride-80ede-default-rtdb.firebaseio.com/'
 })
 ref = db.reference("/")
-ref.set({})
+# ref.set({})
 
 MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 icm20948=ICM20948()
