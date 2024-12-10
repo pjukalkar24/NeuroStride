@@ -1,5 +1,5 @@
 # NeuroStride
-## A smart knee brace to prevent falls in individuals with Multiple Sclerosis.
+<strong>A smart knee brace to prevent falls in individuals with Multiple Sclerosis.</strong>
 
 
 ## Running this Repository
