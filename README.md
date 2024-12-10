@@ -1,3 +1,9 @@
+# NeuroStride
+## A smart knee brace to prevent falls in individuals with Multiple Sclerosis.
+
+
+## Running this Repository
+
 sensor_alignment.py --> works as a logger to save alignment movement data for later use (saves to sensor_alignment.csv)
 
 sensor_data.py --> works as a logger for general purposes (saves to sense_log.csv)
